@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+	    <meta charset="UTF-8">
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+		
+	    <style type="text/css">
+
+		    body{
+				font-family: 'Open Sans', sans-serif;
+			}
+			
+			.blocPDF{
+				/*margin: 20px 335px;*/
+		  		/*padding: 0px 15px;*/
+		  		text-align: center;
+			}
+			
+			.title1, .title2{
+				text-align: center;
+			 	color: black;
+			}
+			
+			.title1{
+				font-weight:bold;
+				background: gainsboro;
+				font-size: 22px;
+	 			margin-bottom: 5px;
+			}
+			
+			.title2{
+				font-weight: 600;
+			 	margin-top: 15px;
+ 				margin-bottom: 5px;
+ 				font-size: 13px;
+			}
+			
+			.left{
+				text-align: left;
+				margin-bottom: 0;
+				margin-top: 0;
+			}
+			
+			.title3{
+				border: 1px solid black;
+				background: gainsboro;
+			}
+			
+			.blocAddress{
+			    font-size: 13px;
+			}
+			
+			.blocSignataire{
+			    font-size: 13px;
+			}
+			
+			.blocFos{
+				display: grid;
+			    grid-template-columns: repeat(2, 1fr);
+			    grid-template-rows: repeat(1, 55px);
+			    font-size: 13px;
+			}
+			
+			.bloc{
+				text-align: center;
+				//width: 98%;
+			}
+			
+			.desc{
+				padding:2px 65px;
+    			border: 1px solid black;
+    			height: 100px;
+			}
+			
+			.desc p {
+    			margin: 0;
+			}
+
+			.droite{
+				width:95%;
+				margin-left: auto;
+			}
+			
+			.date{
+				border: 1px solid black;
+	    		border-top: 2px solid black;
+	    		font-weight: bold;
+			}
+			
+			.table{
+				width: 100%;
+				border-spacing: 15px;
+			}
+			
+			.tableLabel{
+				text-align: left;
+				font-weight: bold;
+			}
+			
+			.tableValue {
+			    background: gainsboro;
+			    border: 1px solid black;
+			}
+			
+			.blocFos p{
+				width:98%;
+			}
+			
+			.blocFos p:nth-child(2) , .bordered{
+				background: gainsboro;
+	    		border: 1px solid black;
+			}
+			.blocClause{
+				margin-bottom: 3em;
+			}
+			
+			.blocOperation, .blocClause, .bloc{
+				font-size: 13px;
+			}
+			
+			.blocInfo{
+				font-size: 12px;
+			}
+			
+			.blocSignataire p{
+				margin-top: 0;
+		   		margin-bottom: 0;
+			}
+			
+			.blocSignataire .bloc p{
+				margin-top: 0;
+			}
+			.upper{
+				text-transform: uppercase;
+			}
+			.withoutBorder{
+				border:none;
+			}
+			.gauche{
+				width:95%;
+			}
+			.width50{
+				width:50%;
+			}
+	    </style>
+	</head> 
+	<body>
+		<div class="blocPDF"></h3>
+			<h3 class="title1 upper" th:text="${location.title} + ' ' + ${location.subtitle}"></h3>
+	   		<p class="title2">CONTRAT DE LOCATION SAISONNIERE EN MEUBLE</p>
+		  	<!--span th:text="'Welcome to ' + ${to} + '!'"></span-->
+		  	
+		  	<div class="blocAddress">
+		  	<table class="withoutBorder" style="width:100%;">
+		  		<tr>
+			  		<td class="width50">
+			  			<div class="bloc gauche">
+					  		<p class="title3">ENTRE BAILLEUR</p>
+						  	<div class="desc">
+								<p>Monsieur PAILLÉ Sylvain</p>
+								<p>La Petite Colle</p>
+								<p>14512 Yverdon de Bouc</p>
+								<p>Tel : YY YY YY YY YY</p>
+							</div>
+					  	</div>
+			  		</td>
+			  		<td class="width50">	
+						<div class="bloc droite">
+							<p class="title3">ET LOCATAIRE</p>
+							<div class="desc">
+								<p><span th:text="${tenant.lastName}"></span> <span th:text="${tenant.firstName}"></span><p>
+								<p><span th:text="${tenant.address}"></span><p>
+								<p><span th:text="${tenant.country}"></span><p>
+								<p><span th:text="${tenant.mobile}"></span><p>
+								<p><span th:text="${tenant.email}"></span><p>
+							</div>
+						</div>
+					</td>
+		  		</tr>
+		  	</table>
+				
+			</div>
+			
+			<div class="blocInfo">
+			  	<p style="margin-bottom: 0;">Il a été convenu ce qui suit :</p>
+			  	<p style="margin-top: 0;">Le bailleur loue les locaux et équipements ci-après désignés qui les accepte aux conditions suivantes :</p>
+			  	
+			  	<p class="info" style="font-weight: bold;">Adresse des locaux :</p>
+			  	<p><span th:text="${location.location}"></span><p>
+			  	<p class="info"  style="font-weight: bold;">Désignation des locaux :</p>
+			</div>
+			
+			<div class="blocOperation">
+				<p class="title4 date">Période du <span class="upper" th:text="${dateFrom}"></span> AU <span class="upper" th:text="${dateTo}"></span></p>
+				<table class="table">
+					<tbody>
+						<tr class="tableTr" th:each="operation : ${operations}">
+							<td class="tableLabel" th:text="${operation.description}"></td>
+							<td class="tableValue" th:text="${operation.amount} + ' euros'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="blocClause">
+				<p class="title2">Clauses particulières :</p>
+				<p class="title2 left">DRAPS NON FOURNIS</p>
+				<p class="left"><span>ME FOURNIR UNE ATTESTATION DE VILLEGIATURE</span>(le demander à votre assureur de votre habitation principale, c’est gratuit) en mentionnant l’adresse du studio et la durée de l’occupation, obligatoire)</p>
+				<p class="left">Un inventaire complet du studio sera effectué à votre arrivée ainsi qu’à votre départ.</p>
+				<p class="left">Ce contrat de location est renouvelable un mois.</p>
+			</div>
+			
+			<div class="blocSignataire">
+				<table class="withoutBorder" style="width:100%;">
+					<tr>
+				  		<td class="width50">
+				  			<div class="bloc gauche">
+						  		<b>FOS SUR MER le:</b>
+						  	</div>
+				  		</td>
+				  		<td class="width50">	
+							<div class="bloc droite">
+								<div class="bordered"><b th:text="${now}"></b></div>
+							</div>
+						</td>
+			  		</tr>
+			  		<tr class="marginBot">
+				  		<td class="width50">
+				  			<div class="bloc gauche">
+						  		<p class="title3">Le bailleur</p>
+						  	</div>
+				  		</td>
+				  		<td class="width50">	
+							<div class="bloc droite">
+								<p class="title3">Le locataire</p>
+							</div>
+						</td>
+			  		</tr>
+			  	</table>
+				<p class="title2">Signature des parties</p>
+			
+				<table class="withoutBorder" style="width:100%;">
+			  		<tr>
+				  		<td class="width50">
+				  			<div class="bloc gauche signature">
+						  		<p>S.PAILLÉ / P.O MME PERSONA</p>
+						  	</div>
+				  		</td>
+				  		<td class="width50">	
+							<div class="bloc droite signature">
+								<p><span th:text="${tenant.lastName}"></span> <span th:text="${tenant.firstName}">ddgf fd</span><p>
+							</div>
+						</td>
+			  		</tr>
+		  		</table>
+			</div>
+			
+		</div>
+	</body>
+</html>
