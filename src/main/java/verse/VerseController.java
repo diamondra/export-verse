@@ -56,18 +56,19 @@ public class VerseController {
 	private final FileService fileService = new FileService();
 
   
-	public VerseService service = new VerseService();
-    @GetMapping("/test")
-    public String test() {
-        return "huuuu";
-    }
-    
-    @PostMapping(value = "/export",consumes = "application/json")
+	public LocationService location_service = new LocationService();
+	public ReservationService reservation_service = new ReservationService();
+
+    @PostMapping(value = "/export/location",consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Resource> export(@RequestBody Export data) throws IOException, DocumentException {
-    	return service.generatePdfFromHtml(data);
+    public ResponseEntity<Resource> exportLocation(@RequestBody Export data) throws IOException, DocumentException {
+    	return location_service.export(data);
     }
     
-    
+    @PostMapping(value = "/export/reservations",consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<Resource> exportReservations(@RequestBody ExportReservation data) throws IOException, DocumentException {
+    	return reservation_service.export(data);
+    }
  
 }

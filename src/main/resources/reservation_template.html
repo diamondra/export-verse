@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+	    <meta charset="UTF-8">
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+		
+	    <style type="text/css">
+
+		    body{
+				font-family: 'Open Sans', sans-serif;
+			}
+			
+			.blocPDF{
+				/*margin: 20px 335px;*/
+		  		/*padding: 0px 15px;*/
+		  		text-align: center;
+			}
+			
+			.title1, .title2{
+				text-align: center;
+			 	color: black;
+			}
+			
+			.title1{
+				font-weight:bold;
+				background: gainsboro;
+				font-size: 22px;
+	 			margin-bottom: 5px;
+			}
+			
+			.title2{
+				font-weight: 600;
+			 	margin-top: 15px;
+ 				margin-bottom: 5px;
+ 				font-size: 13px;
+			}
+			
+			.left{
+				text-align: left;
+				margin-bottom: 0;
+				margin-top: 0;
+			}
+			
+			.title3{
+				border: 1px solid black;
+				background: gainsboro;
+			}
+			
+			.blocAddress{
+			    font-size: 13px;
+			}
+			
+			.blocSignataire{
+			    font-size: 13px;
+			}
+			
+			.blocFos{
+				display: grid;
+			    grid-template-columns: repeat(2, 1fr);
+			    grid-template-rows: repeat(1, 55px);
+			    font-size: 13px;
+			}
+			
+			.bloc{
+				text-align: center;
+				//width: 98%;
+			}
+			
+			.desc{
+				padding:2px 65px;
+    			border: 1px solid black;
+    			height: 100px;
+			}
+			
+			.desc p {
+    			margin: 0;
+			}
+
+			.droite{
+				width:95%;
+				margin-left: auto;
+			}
+			
+			.date{
+				border: 1px solid black;
+	    		border-top: 2px solid black;
+	    		font-weight: bold;
+			}
+			
+			.table{
+				width: 100%;
+				border-spacing: 15px;
+			}
+			
+			.tableLabel{
+				text-align: left;
+				font-weight: bold;
+			}
+			
+			.tableValue {
+			    background: gainsboro;
+			    border: 1px solid black;
+			}
+			
+			.blocFos p{
+				width:98%;
+			}
+			
+			.blocFos p:nth-child(2) , .bordered{
+				background: gainsboro;
+	    		border: 1px solid black;
+			}
+			.blocClause{
+				margin-bottom: 3em;
+			}
+			
+			.blocOperation, .blocClause, .bloc{
+				font-size: 13px;
+			}
+			
+			.blocInfo{
+				font-size: 12px;
+			}
+			
+			.blocSignataire p{
+				margin-top: 0;
+		   		margin-bottom: 0;
+			}
+			
+			.blocSignataire .bloc p{
+				margin-top: 0;
+			}
+			.upper{
+				text-transform: uppercase;
+			}
+			.withoutBorder{
+				border:none;
+			}
+			.resa{
+				text-align: left;
+				text-decoration:underline;
+			}
+	    </style>
+	</head> 
+	<body>
+		<div class="blocPDF"></h3>
+			<h3 class="title1 upper" th:text="${rental.title} + ' ' + ${rental.subtitle}">dd</h3>
+	   								
+			<div class="blocOperation">
+			<h3 class="resa">Période Réservé par :</h3>
+				<table class="table">
+					<tbody>
+						<tr class="tableTr" th:each="line : ${lines}">
+							<td class="tableLabel">
+								<span th:if="${line.dateFrom != null && line.dateTo != null}" th:text="${line.formateDateFrom()}"></span> -> <span th:text="${line.formateDateTo()}">ddd</span> 
+							</td>
+							<td class="valueLabel">
+								<span th:text="${line.price} + '€'"></span>
+							</td>
+							<td class="valueLabel">
+								<span th:if="${line.tenant != null}" th:text="${line.tenant.lastName} + ' ' + ${line.tenant.firstName}">Jacques Martin</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
