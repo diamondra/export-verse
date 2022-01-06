@@ -97,12 +97,11 @@ and open the template in the editor.
 			
 			.table{
 				width: 100%;
-				border-spacing: 15px;
+				border-spacing: 10px;
 			}
 			
 			.tableLabel{
 				text-align: left;
-				font-weight: bold;
 			}
 			
 			.tableValue {
@@ -148,29 +147,41 @@ and open the template in the editor.
 				text-align: left;
 				text-decoration:underline;
 			}
+			.mois{
+				text-align: left;
+				text-transform: capitalize;
+				font-weight: bold;
+			}
+			td{
+			width:30%;
+			}
 	    </style>
 	</head> 
 	<body>
 		<div class="blocPDF"></h3>
-			<h3 class="title1 upper" th:text="${rental.title} + ' ' + ${rental.subtitle}">dd</h3>
+			<h3 class="title1 upper" th:text="${rental.title} + ' ' + ${rental.subtitle}"></h3>
 	   								
 			<div class="blocOperation">
-			<h3 class="resa">Période Réservé par :</h3>
-				<table class="table">
-					<tbody>
-						<tr class="tableTr" th:each="line : ${lines}">
-							<td class="tableLabel">
-								<span th:if="${line.dateFrom != null && line.dateTo != null}" th:text="${line.formateDateFrom()}"></span> -> <span th:text="${line.formateDateTo()}">ddd</span> 
-							</td>
-							<td class="valueLabel">
-								<span th:text="${line.price} + '€'"></span>
-							</td>
-							<td class="valueLabel">
-								<span th:if="${line.tenant != null}" th:text="${line.tenant.lastName} + ' ' + ${line.tenant.firstName}">Jacques Martin</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<h3 class="resa">Période Réservé par :</h3>
+				<div th:each="data : ${linesPerMonth}">
+					<p class="mois" th:text="${data.key} + ' : '"></p>
+					<table class="table">
+						<tbody>
+							<tr th:each="line : ${data.value}">
+							   <td class="tableLabel">
+									<span th:if="${line.dateFrom != null && line.dateTo != null}" th:text="${line.formateDateFrom()}"></span> -> <span th:text="${line.formateDateTo()}"></span> 
+								</td>
+								<td class="valueLabel">
+									<span th:text="${line.price} + '€'"></span>
+								</td>
+								<td class="valueLabel">
+									<span th:if="${line.tenant != null}" th:text="${line.tenant.lastName} + ' ' + ${line.tenant.firstName}"></span>
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</body>

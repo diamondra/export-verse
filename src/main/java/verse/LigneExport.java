@@ -6,10 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LigneExport {
+public class LigneExport implements Comparable<LigneExport>{
 	private String id;
-	private String dateFrom;
-	private String dateTo;
+	private Date dateFrom;
+	private Date dateTo;
 	private Double price;
 	private Tenant tenant;
 	
@@ -19,16 +19,16 @@ public class LigneExport {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getDateFrom() {
+	public Date getDateFrom() {
 		return dateFrom;
 	}
-	public void setDateFrom(String dateFrom) {
+	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
-	public String getDateTo() {
+	public Date getDateTo() {
 		return dateTo;
 	}
-	public void setDateTo(String dateTo) {
+	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
 	}
 	public Double getPrice() {
@@ -46,32 +46,28 @@ public class LigneExport {
 	
 	public String formateDateFrom() throws ParseException {
 		DateFormat outputFormat = new SimpleDateFormat("MM/yyyy");
-		DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-		Date date = inputFormat.parse(this.getDateFrom());
-		String outputText = outputFormat.format(date);
+		String outputText = outputFormat.format(this.getDateFrom());
 		
 		 return outputText;
 	}
 	
 	public String formateDateTo() throws ParseException {
 		DateFormat outputFormat = new SimpleDateFormat("MM/yyyy");
-		DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-		Date date = inputFormat.parse(this.getDateTo());
-		String outputText = outputFormat.format(date);
+		String outputText = outputFormat.format(this.getDateTo());
 		
 		 return outputText;
 	}
-	public String getMonthForInt() {
-	    String month = "";
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
-	    int num = Integer.parseInt(dateFormat.format(this.getDateTo()));
+	public String getMonth() {
 	    DateFormatSymbols dfs = new DateFormatSymbols();
 	    String[] months = dfs.getMonths();
-	    if (num >= 1 && num <= 12) {
-	        month = months[num-1];
-	    }
-	    return month;
+	    return months[this.getDateTo().getMonth()];
 	}
+	
+	@Override
+	  public int compareTo(LigneExport o) {
+		System.out.println(getDateTo()+"VS" +o.getDateTo()+"========>"+getDateTo().compareTo(o.getDateTo()));
+	    return getDateTo().compareTo(o.getDateTo());
+	  }
 }
