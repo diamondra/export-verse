@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -50,4 +51,9 @@ public class VerseService {
 	    );
     }
 
+    public String getMonthLetters(int number) {
+	    DateFormatSymbols dfs = new DateFormatSymbols();
+	    String[] months = dfs.getMonths();
+	    return months[number];
+	}
 }

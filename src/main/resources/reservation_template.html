@@ -163,8 +163,9 @@ and open the template in the editor.
 	   								
 			<div class="blocOperation">
 				<h3 class="resa">Période Réservé par :</h3>
+				
 				<div th:each="data : ${linesPerMonth}">
-					<p class="mois" th:text="${data.key} + ' : '"></p>
+					<p class="mois" th:text="${months.liste[data.key]} + ' : '"></p>
 					<table class="table">
 						<tbody>
 							<tr th:each="line : ${data.value}">

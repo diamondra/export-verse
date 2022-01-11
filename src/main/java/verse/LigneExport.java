@@ -4,9 +4,13 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-public class LigneExport implements Comparable<LigneExport>{
+import ch.qos.logback.core.joran.conditional.IfAction;
+
+public class LigneExport{
 	private String id;
 	private Date dateFrom;
 	private Date dateTo;
@@ -59,15 +63,93 @@ public class LigneExport implements Comparable<LigneExport>{
 		
 		 return outputText;
 	}
-	public String getMonth() {
-	    DateFormatSymbols dfs = new DateFormatSymbols();
-	    String[] months = dfs.getMonths();
-	    return months[this.getDateTo().getMonth()];
+
+	public int getMonth2() {
+	    return this.getDateTo().getMonth();
 	}
 	
-	@Override
-	  public int compareTo(LigneExport o) {
-		System.out.println(getDateTo()+"VS" +o.getDateTo()+"========>"+getDateTo().compareTo(o.getDateTo()));
-	    return getDateTo().compareTo(o.getDateTo());
+	public ArrayList<Date> listMonthsBetween() {
+		Calendar beginCalendar = Calendar.getInstance();
+	    Calendar finishCalendar = Calendar.getInstance();
+	
+	    beginCalendar.setTimeInMillis(this.getDateFrom().getTime());
+	    finishCalendar.setTimeInMillis(this.getDateTo().getTime());
+	
+	    Date date;
+	    ArrayList<Date> listMonths = new ArrayList<Date>();
+	    
+	    while (beginCalendar.before(finishCalendar)) {
+			date = beginCalendar.getTime();
+			listMonths.add(date);
+			beginCalendar.add(Calendar.MONTH, 1);
+	    }
+	    if(this.getDateFrom().getMonth() != this.getDateTo().getMonth()) {
+			date = finishCalendar.getTime();
+			listMonths.add(date);
+	    }
+        
+	   return listMonths;
+	}
+	
+	public int getMonth() {
+		ArrayList<Date> months = this.listMonthsBetween();
+		ArrayList<Integer> listDiffDays = new ArrayList<Integer>();
+		
+		int index = 0;
+
+		if(months.size() > 1) {
+			for (Date month : months) { 
+		    	if(index == 0) {
+		    		Date lastDayDate = getLastDayOfMonth(month);
+		    		listDiffDays.add(calculateDaysBetweenTwoDates(lastDayDate, month));
+		    	}else {
+		    		Date firstDayDate = getFirstDayOfMonth(month);
+		    		listDiffDays.add(calculateDaysBetweenTwoDates(month, firstDayDate));
+		    	}
+		    	
+		    	index++;
+		    }
+			return months.get(maxIndex(listDiffDays)).getMonth();
+		}else {
+	    	return months.get(0).getMonth();
+	    }
+	}
+	
+	public Date getLastDayOfMonth(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return c.getTime();
+	}
+	
+	public Date getFirstDayOfMonth(Date date) {
+		 Calendar c = Calendar.getInstance();
+		 c.setTime(date);
+		 c.set(Calendar.DAY_OF_MONTH, 1);
+		 return c.getTime(); 
+	}
+	
+	public int calculateDaysBetweenTwoDates(Date date1, Date date2) {
+		 if(date1.getTime() > date2.getTime()) {
+			 return (int)( (date1.getTime() - date2.getTime()) / (1000 * 60 * 60 * 24));
+		 }else {
+			 return (int)( (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
+		 }
+	}
+	
+	public int maxIndex(ArrayList<Integer> list) {
+	  Integer i=0, 
+	  maxIndex=-1, max=null;
+	  for (Integer x : list) {
+	    if ((x!=null) && ((max==null) || (x>=max))) {
+	      max = x;
+	      maxIndex = i;
+	    }
+	    i++;
 	  }
+	  if(maxIndex == -1) {
+		  return list.size() - 1;
+	  }
+	  return maxIndex;
+	}
 }
