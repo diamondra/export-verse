@@ -68,6 +68,7 @@ public class VerseController {
     @PostMapping(value = "/export/reservations",consumes = "application/json")
     @ResponseBody
     public ResponseEntity<Resource> exportReservations(@RequestBody ExportReservation data) throws IOException, DocumentException {
+    	System.out.println(data);
     	return reservation_service.export(data);
     }
  

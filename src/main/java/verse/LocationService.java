@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,11 @@ public class LocationService {
 	     context.setVariable("tenant", data.getContract().getTenant());
 	     context.setVariable("contract", data.getContract());
 	     context.setVariable("location", data.getLocation());
-	     context.setVariable("operations", data.getOperations());
-	     
+	     List<Operation> operations = data.getOperations()
+	    		  .stream()
+	    		  .filter(o -> o.getType().equals("arrhes") || o.getType().equals("loyer"))
+	    		  .collect(Collectors.toList());
+	     context.setVariable("operations",operations);
 	     SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yy");
 	     context.setVariable("now", dt1.format(new Date()));
 	     
